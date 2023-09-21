@@ -1,0 +1,31 @@
+namespace SuperAutoProfessionals
+{
+    public class SecurityGuard : Professional
+    {
+        public override string CodeName => "SecurityGuard";
+        private bool hasAttacked = false;
+
+        internal override bool On(Event e)
+        {
+            base.On(e);
+
+            if (e.Code == EventCode.AfterAttack)
+            {
+                // Check if this professional has just attacked and hasn't gained attack yet
+                if (hasAttacked == false && e.Professional == this)
+                {
+                    // Increase the attack by 5
+                    ModifyAttack(5);
+                    hasAttacked = true;
+                }
+            }
+            else if (e.Code == EventCode.BeforeAttack)
+            {
+                // Reset the "hasAttacked" flag before the next attack
+                hasAttacked = false;
+            }
+
+            return false;
+        }
+    }
+}
