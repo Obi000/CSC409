@@ -1,0 +1,28 @@
+namespace SuperAutoProfessionals
+{
+    public class Lawyer : Professional
+    {
+        public override string CodeName => "Lawyer";
+
+        internal override bool On(Event e)
+        {
+            base.On(e);
+
+            if (e.Code == EventCode.StartOfBattle)
+            {
+                // Calculate the average of both teams' attack and health values
+                var avgAttack = (Team.GetTotalAttackPower() + EnemyTeam.GetTotalAttackPower()) / 2;
+                var avgHealth = (Team.GetTotalHealth() + EnemyTeam.GetTotalHealth()) / 2;
+
+                // Set the lawyer's attack and health values to the calculated averages
+                SetAttack(avgAttack);
+                SetHealth(avgHealth);
+
+                // Spawn a friend with +2 attack and +3 health
+                SpawnFriend("Friend", 2, 3);
+            }
+
+            return false;
+        }
+    }
+}
